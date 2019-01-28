@@ -2,8 +2,9 @@ import { GAMEMODE , PLAYERSTATUS } from "./enum";
 let gameConfig = {
     mode:GAMEMODE.battleWithFriends,
     turn:PLAYERSTATUS.black,
+    width:600,
     scalingRatio:1,
-    setScaling(ratio:Number){
+    setScaling(ratio:number){
         gameConfig.scalingRatio = gameConfig.scalingRatio* ratio;
         abstractChess.size.width = abstractChess.size.width *  ratio;
         abstractChess.size.height = abstractChess.size.height *  ratio;
