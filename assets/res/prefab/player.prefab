@@ -12,19 +12,15 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "white",
+    "_name": "player",
     "_objFlags": 0,
     "_parent": null,
     "_children": [],
     "_active": true,
-    "_level": 2,
-    "_components": [
-      {
-        "__id__": 2
-      }
-    ],
+    "_level": 1,
+    "_components": [],
     "_prefab": {
-      "__id__": 3
+      "__id__": 2
     },
     "_opacity": 255,
     "_color": {
@@ -36,8 +32,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 35,
-      "height": 35
+      "width": 0,
+      "height": 0
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -46,8 +42,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -211,
-      "y": 177,
+      "x": 0,
+      "y": 0,
       "z": 0
     },
     "_scale": {
@@ -72,34 +68,6 @@
     "_id": ""
   },
   {
-    "__type__": "cc.Sprite",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "_srcBlendFactor": 770,
-    "_dstBlendFactor": 771,
-    "_spriteFrame": {
-      "__uuid__": "8d48c167-c164-4670-9084-a6d186bb1bcb"
-    },
-    "_type": 0,
-    "_sizeMode": 0,
-    "_fillType": 0,
-    "_fillCenter": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_fillStart": 0,
-    "_fillRange": 0,
-    "_isTrimmedMode": true,
-    "_state": 0,
-    "_atlas": null,
-    "_id": ""
-  },
-  {
     "__type__": "cc.PrefabInfo",
     "root": {
       "__id__": 1
@@ -107,7 +75,7 @@
     "asset": {
       "__id__": 0
     },
-    "fileId": "6beNKEN/tLZbJtQvvCgRxf",
+    "fileId": "c6fGoNZodJ1JVtsCiKywOS",
     "sync": false
   }
 ]

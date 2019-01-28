@@ -18,6 +18,18 @@
 						   如果失败返回false， 进行选手的轮换。
 
 	
+游戏拆解
+	人物
+	实例化一个人物；
+	该人物具有
+		click事件，绑定的对象为棋盘。事件名为落子。
+	
+	gameManager:
+		具有gameInit事件，即游戏初始化。棋盘初始化(chessinit)， 人物初始化(人物实力化)。
+		具有turnOver事件，即当前回合结束，接收一个 fallchess ，进行step valid ，进行棋盘事件的切换;
+		具有creatChess事件，即渲染棋子位置。
+		具有gameOver事件，即游戏结束。
+	
 	
 	
 	
