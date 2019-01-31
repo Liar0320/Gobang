@@ -12,6 +12,12 @@ const GAMEMODE = cc.Enum({
     battleWithFriends:-1
 })
 
+// const GAMESTATUS = cc.Enum({
+//     waiting:-1,
+//     running:-1,
+//     ended:-1
+// })
+
 export { 
     PLAYERSTATUS,
     GAMEMODE

@@ -27,12 +27,6 @@ export default class NewClass extends cc.Component {
     @property(cc.Node)
     player02: cc.Node = null;
 
-    @property(cc.Node)
-    chessBoard: cc.Node = null;
-
-    @property
-    currentColor: Number = PLAYERSTATUS.black;
-
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
@@ -40,22 +34,19 @@ export default class NewClass extends cc.Component {
     }
 
     start () {
-        if(gameConfig.mode  === GAMEMODE.battleWithFriends) console.log("和好友对战");
-        this.chessBoard.height = this.chessBoard.width * gameConfig.scalingRatio;
-        let firstNode = cc.instantiate(this.chessBlack);
-        firstNode.setParent(this.chessBoard);
-        firstNode.setPosition(-abstractChess.size.width,abstractChess.size.height);
+    
+     
+        
     }
 
     init () {
 
     }
 
-    boardInit () {
+ 
 
-    }
 
-     update (dt) {
+    update (dt) {
    
     }
 }

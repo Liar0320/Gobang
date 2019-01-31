@@ -9,27 +9,73 @@
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 const {ccclass, property} = cc._decorator;
-
+import { PLAYERSTATUS } from "./enum";
+import { abstractChess , gameConfig } from "./gameConfig";
 @ccclass
 export default class NewClass extends cc.Component {
 
     // @property(cc.Label)
     // label: cc.Label = null;
 
-    @property
-    color: Number = -1;
+    @property({type:cc.Enum(PLAYERSTATUS),serializable:true,displayName:"代表方"})
+    turn = PLAYERSTATUS.empty
+
+    @property({type:cc.Node,serializable:true,displayName:"棋盘"})
+    chessBoard:cc.Node = null;
+
+    @property({type:cc.Prefab,serializable:true,displayName:"黑色棋子"})
+    chessBlack: cc.Prefab = null;
+
+    @property({type:cc.Prefab,serializable:true,displayName:"白色棋子"})
+    chessWhite: cc.Prefab = null;
 
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
 
     start () {
-
+        this.chessBoard.on(cc.Node.EventType.TOUCH_START,this.fallChess,this);
     }
 
-    fallChess(e){
-        console.log(e);
+    fallChess(e:cc.Event.EventTouch){
+        if(this.turn !== gameConfig.turn) return false;
+        var pois = this.chessBoard.convertToNodeSpaceAR(e.getLocation());
+        var result = abstractChess.setCell(pois,this.turn);
+        if(result.isExist) return false;
+        this.receive(result);
     }
+
+    changeTurn(){
+        setTimeout(()=>{
+            gameConfig.turn =   gameConfig.turn === gameConfig.turns[0] ?
+                            gameConfig.turns[1] :
+                            gameConfig.turns[0] ;
+        })
+    }
+
+    receive(result){
+        if(result.bol){
+            console.log("胜利");
+        }else{
+           this.changeTurn();
+        }
+
+        let chessPrefab = this.turn === PLAYERSTATUS.black ? this.chessBlack:this.chessWhite;
+        let chess = cc.instantiate(chessPrefab);
+        chess.setParent(this.chessBoard);
+        chess.setPosition(result.pois);
+    }
+
+
+    // playerSetTurn (player01,player02) {
+    //     player01 = player01 || this.player01.getComponent('player');
+    //     player02 = player02 || this.player02.getComponent('player');
+    //     var turns = gameConfig.turns;
+    //     turns.push(turns.shift())
+    //     player01.turn = turns[0];
+    //     player02.turn = turns[1];
+    // }
+
 
     // update (dt) {}
 }
