@@ -1,8 +1,9 @@
-import { GAMEMODE , PLAYERSTATUS } from "./enum";
+import { GAMEMODE , PLAYERSTATUS ,GAMESTATUS } from "./enum";
 let gameConfig = {
     mode:GAMEMODE.battleWithFriends,
     turn:PLAYERSTATUS.black,
     turns:[PLAYERSTATUS.black,PLAYERSTATUS.white],
+    status:GAMESTATUS.waiting,
     width:600,
     scalingRatio:1,
     setScaling(ratio:number){
@@ -20,13 +21,15 @@ let gameConfig = {
 class AbstractChess {
     size:rect = {width:0,height:0}
     cellSize:rect = {width:0,height:0}
+    queue:Array<i_stepStack> = [];
     containt = null;
+    preFall:i_XY = {x:-999,y:-999};
     constructor(size:Array<Number>,height:number,width:number) {
         this.containt = this._initChess(size);
         this._initSize(height,width);
     }
 
-    _initChess(size:Array<Number>) {
+    _initChess(size:Array<Number>) :Array<Array<number>> {
         var result = [];
         for (let i = 0; i < size[0]; i++) {
             if(!Array.isArray(result[i])) result[i] = [];
@@ -44,7 +47,7 @@ class AbstractChess {
         this.cellSize.height = 2*height/14;
     }
 
-    _isRules(boardLayout,current:Array<number>,turn){
+    _isRules(boardLayout:Array<Array<number>>,current:Array<number>,turn:PLAYERSTATUS){
         var matchOpreat = [1, 1];
         var method = 0;
         // 用for比while应该更好
@@ -77,21 +80,36 @@ class AbstractChess {
         }
         return false;
     }
-
-    //plyaer无法使用cc.enmu枚举接收
-    setCell(location:cc.Vec2,player){
+    setPreCell(location:cc.Vec2){
         var x:number = Math.round((location.x + this.size.width)/this.cellSize.width);
         var y:number = Math.round((location.y + this.size.height)/this.cellSize.height);
-        var isExist = true;
-        if(this.containt[x][y] === PLAYERSTATUS.empty) {
-            isExist = false;
-            this.containt[x][y] = player;
-        }
+
+        if(this.containt[x][y] !== PLAYERSTATUS.empty) return false;
+
+        this.preFall={x,y};
+
+        return this.trasnferCellToSize(this.preFall);
+    }
+
+    setCell(preFall:i_XY) : {pois: cc.Vec2, bol:boolean}{
+        var x:number = preFall.x;
+        var y:number = preFall.y;
+
+        this.containt[x][y] = gameConfig.turn;
+        this.queue.push({
+            playerStatus:gameConfig.turn,
+            xy:preFall
+        });
+        // this.queue[gameConfig.turn] ? this.queue[gameConfig.turn].push([x,y]) : this.queue[gameConfig.turn] = [[x,y]];
+
         return {
-            isExist:isExist,
-            pois: !isExist && cc.v2((x - 7)*this.cellSize.width,(y - 7)*this.cellSize.height),
-            bol: !isExist && this._isRules(this.containt,[y,x],player)
+            pois: this.trasnferCellToSize(preFall),
+            bol: this._isRules(this.containt,[y,x], gameConfig.turn)
         };
+    }
+
+    trasnferCellToSize(pois:i_XY){
+        return  cc.v2((pois.x - 7)*this.cellSize.width,(pois.y - 7)*this.cellSize.height)
     }
 }
 
@@ -120,6 +138,23 @@ interface rect{
     height:number
 }
 
+interface i_stepStack{
+    playerStatus:PLAYERSTATUS,
+    xy:i_XY
+}
+
+// interface i_setCellResult{
+//     // fallDownStatus:ABSTRACTFALLDOWN,
+//     // playerstatus:PLAYERSTATUS,
+//     pois: cc.Vec2,
+//     bol:boolean
+// }
+
+interface i_XY{
+    x:number,
+    y:number
+}
+
 // class player {
 //     name:string
 //     id:string
@@ -130,4 +165,4 @@ interface rect{
 //         this.icon = icon
 //     }
 // }
-export { gameConfig , abstractChess , player }
+export { gameConfig , abstractChess , player  ,i_XY }
